@@ -1,0 +1,60 @@
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+release/
+
+# Gradle files
+.gradle/
+build/
+app/build/
+**/build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Android Studio
+*.iml
+.idea/
+.DS_Store
+.navigation/
+*.hprof
+captures/
+.externalNativeBuild/
+.cxx/
+.kotlin/
+
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. APIs)
+google-services.json
+
+# Version control
+.git/
+.svn/
+
+# OS-specific files
+Thumbs.db
+.DS_Store
+
+# Misc
+*.log
+*.swp
+*~
+*.bak
+
+# Gradle wrapper (keep the jar, ignore local gradle cache)
+!gradle/wrapper/gradle-wrapper.jar
