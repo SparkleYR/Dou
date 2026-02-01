@@ -58,3 +58,5 @@ Thumbs.db
 
 # Gradle wrapper (keep the jar, ignore local gradle cache)
 !gradle/wrapper/gradle-wrapper.jar
+
+ROADMAP.md

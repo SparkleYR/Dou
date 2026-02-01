@@ -153,6 +153,8 @@ fun DockApp(
                     DockScreen(
                         dockState = dockState,
                         onPlayPauseClick = { viewModel.togglePlayPause() },
+                        onSkipNext = { viewModel.skipNext() },
+                        onSkipPrevious = { viewModel.skipPrevious() },
                         modifier = Modifier.fillMaxSize()
                     )
                 }

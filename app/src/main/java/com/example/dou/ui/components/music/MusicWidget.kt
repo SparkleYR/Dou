@@ -3,6 +3,7 @@ package com.example.dou.ui.components.music
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,6 +34,8 @@ import com.example.dou.ui.theme.*
 fun MusicWidgetLandscape(
     mediaInfo: MediaInfo,
     onPlayPauseClick: () -> Unit,
+    onSkipNext: () -> Unit = {},
+    onSkipPrevious: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -82,6 +85,8 @@ fun MusicWidgetLandscape(
                 isPlaying = mediaInfo.isCurrentlyPlaying,
                 progress = mediaInfo.progress,
                 onPlayPauseClick = onPlayPauseClick,
+                onSkipNext = onSkipNext,
+                onSkipPrevious = onSkipPrevious,
                 enabled = mediaInfo.displayTitle != "Not Playing"
             )
         }
@@ -97,29 +102,29 @@ fun SmartWatchControls(
     isPlaying: Boolean,
     progress: Float,
     onPlayPauseClick: () -> Unit,
+    onSkipNext: () -> Unit,
+    onSkipPrevious: () -> Unit,
     enabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(4.dp), // Tighter spacing
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Ghost Previous button (50% opacity - visible but subtle)
         IconButton(
-            onClick = { /* TODO: Previous track */ },
+            onClick = onSkipPrevious,
             enabled = enabled,
             modifier = Modifier.size(36.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.SkipPrevious,
                 contentDescription = "Previous",
-                tint = ClockWhite.copy(alpha = 0.5f), // 50% opacity - light gray
+                tint = ClockWhite.copy(alpha = 0.5f),
                 modifier = Modifier.size(24.dp)
             )
         }
         
-        // Circular progress ring with play/pause button
         CircularPlayButton(
             isPlaying = isPlaying,
             progress = progress,
@@ -127,16 +132,15 @@ fun SmartWatchControls(
             enabled = enabled
         )
         
-        // Ghost Next button (50% opacity - visible but subtle)
         IconButton(
-            onClick = { /* TODO: Next track */ },
+            onClick = onSkipNext,
             enabled = enabled,
             modifier = Modifier.size(36.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.SkipNext,
                 contentDescription = "Next",
-                tint = ClockWhite.copy(alpha = 0.5f), // 50% opacity - light gray
+                tint = ClockWhite.copy(alpha = 0.5f),
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -158,21 +162,24 @@ fun CircularPlayButton(
     modifier: Modifier = Modifier
 ) {
     val ringSize = 52.dp
-    val strokeWidth = 2.dp // Thinner = more elegant, matches thin clock font
+    val strokeWidth = 2.dp
     
     Box(
-        modifier = modifier.size(ringSize),
+        modifier = modifier
+            .size(ringSize)
+            .clickable(
+                enabled = enabled,
+                onClick = onClick
+            ),
         contentAlignment = Alignment.Center
     ) {
-        // Background ring (track)
         CircularProgressIndicator(
             progress = { 1f },
             modifier = Modifier.fillMaxSize(),
-            color = ClockWhite.copy(alpha = 0.15f), // Faint track
+            color = ClockWhite.copy(alpha = 0.15f),
             strokeWidth = strokeWidth
         )
         
-        // Progress ring (fills as song plays)
         CircularProgressIndicator(
             progress = { progress },
             modifier = Modifier.fillMaxSize(),
@@ -180,19 +187,12 @@ fun CircularPlayButton(
             strokeWidth = strokeWidth
         )
         
-        // Play/Pause button in center - larger icon (10% bigger)
-        IconButton(
-            onClick = onClick,
-            enabled = enabled,
-            modifier = Modifier.size(40.dp)
-        ) {
-            Icon(
-                imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
-                contentDescription = if (isPlaying) "Pause" else "Play",
-                tint = if (enabled) ClockWhite else MutedGray,
-                modifier = Modifier.size(28.dp) // 10% larger than before (was 24dp)
-            )
-        }
+        Icon(
+            imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
+            contentDescription = if (isPlaying) "Pause" else "Play",
+            tint = if (enabled) ClockWhite else MutedGray,
+            modifier = Modifier.size(28.dp)
+        )
     }
 }
 

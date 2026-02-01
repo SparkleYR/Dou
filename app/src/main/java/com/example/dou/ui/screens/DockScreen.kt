@@ -14,6 +14,8 @@ import com.example.dou.data.model.DockState
 fun DockScreen(
     dockState: DockState,
     onPlayPauseClick: () -> Unit,
+    onSkipNext: () -> Unit = {},
+    onSkipPrevious: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val configuration = LocalConfiguration.current
@@ -23,6 +25,8 @@ fun DockScreen(
         LandscapeDockScreen(
             dockState = dockState,
             onPlayPauseClick = onPlayPauseClick,
+            onSkipNext = onSkipNext,
+            onSkipPrevious = onSkipPrevious,
             modifier = modifier
         )
     } else {

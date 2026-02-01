@@ -170,26 +170,39 @@ class MediaRepository(private val context: Context) {
     fun togglePlayPause() {
         activeController?.let { controller ->
             val state = controller.playbackState?.state
+            Log.d(TAG, "togglePlayPause called, state: $state")
             when (state) {
-                PlaybackState.STATE_PLAYING -> controller.transportControls.pause()
-                PlaybackState.STATE_PAUSED -> controller.transportControls.play()
-                else -> controller.transportControls.play()
+                PlaybackState.STATE_PLAYING -> {
+                    Log.d(TAG, "Pausing playback")
+                    controller.transportControls.pause()
+                }
+                PlaybackState.STATE_PAUSED -> {
+                    Log.d(TAG, "Resuming playback")
+                    controller.transportControls.play()
+                }
+                else -> {
+                    Log.d(TAG, "Starting playback (state: $state)")
+                    controller.transportControls.play()
+                }
             }
-        }
+        } ?: Log.w(TAG, "togglePlayPause called but activeController is null")
     }
     
     /**
      * Skip to next track
      */
     fun skipNext() {
-        activeController?.transportControls?.skipToNext()
+        activeController?.let { controller ->
+            Log.d(TAG, "skipNext called")
+            controller.transportControls.skipToNext()
+        } ?: Log.w(TAG, "skipNext called but activeController is null")
     }
     
-    /**
-     * Skip to previous track
-     */
     fun skipPrevious() {
-        activeController?.transportControls?.skipToPrevious()
+        activeController?.let { controller ->
+            Log.d(TAG, "skipPrevious called")
+            controller.transportControls.skipToPrevious()
+        } ?: Log.w(TAG, "skipPrevious called but activeController is null")
     }
     
     /**

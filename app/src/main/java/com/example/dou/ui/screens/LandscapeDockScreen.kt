@@ -48,6 +48,8 @@ import com.example.dou.ui.theme.*
 fun LandscapeDockScreen(
     dockState: DockState,
     onPlayPauseClick: () -> Unit,
+    onSkipNext: () -> Unit = {},
+    onSkipPrevious: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     BurnInWrapper(enabled = dockState.settings.burnInPrevention) {
@@ -162,7 +164,9 @@ fun LandscapeDockScreen(
                 // Music Widget (ALWAYS VISIBLE for debugging)
                 MusicWidgetLandscape(
                     mediaInfo = dockState.mediaInfo,
-                    onPlayPauseClick = onPlayPauseClick
+                    onPlayPauseClick = onPlayPauseClick,
+                    onSkipNext = onSkipNext,
+                    onSkipPrevious = onSkipPrevious
                 )
             }
         }
